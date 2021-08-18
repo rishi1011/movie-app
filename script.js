@@ -13,39 +13,47 @@ getMovies(CURRENT_THEATRE_MOVIES)
 async function getMovies(url) {
     const res = await fetch(url)
     const data = await res.json()
-    console.log(data.results)
 
     showMovies(data.results)
 }
 
 function showMovies(results) {
-    // main.innerHTML = ""
+    main.innerHTML = ""
 
-    results.forEach((movie) => {
-        const { title, vote_average, poster_path, overview } = movie
-
-        console.log(title, poster_path, overview, vote_average)
-
-        const movieEle = document.createElement('div')
-
-        movieEle.classList.add("movie")
-
-        movieEle.innerHTML = `
-            <div class="img-container">
-                <img src="${IMG_URL + poster_path}"
-                    alt="${title}">
-            </div>
-            <div class="movie-info">
-                <h3 class="movie-title">${title}</h3>
-                <span class="rating">${vote_average}</span>
-            </div>
-            <div class="overview">
-                ${overview}
-            </div>
+    if (results.length === 0) {
+        console.log("hello")
+        main.innerHTML = `
+        <h2 style="text-align: center;">No results found</h2>
         `
+    } else {
+        results.forEach((movie) => {
+            const { title, vote_average, poster_path, overview } = movie
 
-        main.appendChild(movieEle)
-    })
+            console.log(title, poster_path, overview, vote_average)
+
+            const movieEle = document.createElement('div')
+
+            movieEle.classList.add("movie")
+
+            movieEle.innerHTML = `
+                <div class="img-container">
+                    <img src="${IMG_URL + poster_path}"
+                        alt="${title}">
+                </div>
+                <div class="movie-info">
+                    <h3 class="movie-title">${title}</h3>
+                    <span class="rating">${vote_average}</span>
+                </div>
+                <div class="overview">
+                    ${overview}
+                </div>
+            `
+
+            main.appendChild(movieEle)
+        })
+
+    }
+
 }
 
 form.addEventListener("submit", (e) => {
